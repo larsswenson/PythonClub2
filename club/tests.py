@@ -1,5 +1,6 @@
 from django.test import TestCase
 from .models import Meeting, MeetingType, Resource, Event
+from .forms import ResourceForm, MeetingForm
 
 # Create your tests here.
 
@@ -44,3 +45,30 @@ class EventTest(TestCase):
 
    def test_table(self):
        self.assertEqual(str(Event._meta.db_table), 'eventtitle')
+
+class NewResourceForm(TestCase):
+   def test_resourceform(self):
+       form=ResourceForm(data={'resourcename': 'resource3', 
+                               'resourcetype' : 'type3', 
+                               'resourceurl': 'http://resource3.org', 
+                               'resourcedateentered': '2022-05-16', 
+                               'resourceuserid': 'user1', 
+                               'resourcedescription': 'description3'})
+       self.assertTrue(form.is_valid())
+
+class NewMeetingForm(TestCase):
+   def test_meetingform(self):
+       form=MeetingForm(data={'meetingtitle': 'meeting3', 
+                              'meetingdate' : '2022-05-17', 
+                              'meetingtime': '03:29:23', 
+                              'meetinglocation': 'location3', 
+                              'meetingagenda': 'agenda3'})
+       self.assertTrue(form.is_valid())
+
+def test_meetingform_minus_location(self):
+        form=MeetingForm(data={'meetinglocation': "location3"})
+        self.assertTrue(form.is_valid())
+
+def test_meetingform_empty(self):
+        form=MeetingForm(data={'meetingtitle': ""})
+        self.assertFalse(form.is_valid())
